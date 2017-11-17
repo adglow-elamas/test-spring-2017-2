@@ -15,6 +15,8 @@ public class Test {
 	
 	public static void main(String[] args) {
 		try {
+			//comentario de pruebas
+			
 			ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 			UserService userService = context.getBean("userService", UserService.class);
 			
