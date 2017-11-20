@@ -21,7 +21,8 @@ public class MyWebApplicationInitializer implements WebApplicationInitializer {
 		logger.info("[m:onStartup]");
 		
 		XmlWebApplicationContext appContext = new XmlWebApplicationContext();
-		appContext.setConfigLocation("/WEB-INF/classes/beans.xml");
+		//appContext.setConfigLocation("/WEB-INF/classes/beans.xml");
+		appContext.setConfigLocation("/WEB-INF/classes/beans-web.xml");
 		
 		ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", new DispatcherServlet(appContext));
 		dispatcher.setLoadOnStartup(1);

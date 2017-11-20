@@ -19,7 +19,8 @@ public class Test {
 			//comentario de pruebas
 			//logger.info("[m:main]: Principio");
 			
-			ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
+			//ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
+			ApplicationContext context = new ClassPathXmlApplicationContext("beans-process.xml");
 			UserService userService = context.getBean("userService", UserService.class);
 			
 			//userService.test();
