@@ -1,6 +1,8 @@
 package service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import domain.User;
@@ -40,5 +42,10 @@ public class UserServiceImpl implements UserService {
 	public void delete(Long id) {
 		this.userRepository.deleteById(id);
 		
+	}
+
+	@Override
+	public Page<User> findAll(Pageable pageable) {
+		return this.userRepository.findAll(pageable);
 	}
 }

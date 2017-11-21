@@ -1,6 +1,9 @@
 package web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +17,8 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+
 
 @RestController
 public class UserController {
@@ -52,5 +57,13 @@ public class UserController {
 //    	logger.info("[m:save]: user.toString(): " + user.toString());
     	return userService.save(user);
     }
+
+    //test pagination
+    @RequestMapping(value = "/backend/users/{page}", method = RequestMethod.GET)
+    public Page<User> findAll(@PathVariable("page") int page) {
+    	//Pageable pageable = new PageRequest(0,2);
+    	Pageable pageable = PageRequest.of(page, 2);
+    	return userService.findAll(pageable);
+    }	
     
 }
