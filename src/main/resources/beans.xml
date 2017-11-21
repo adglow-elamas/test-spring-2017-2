@@ -4,6 +4,7 @@
         xmlns:context="http://www.springframework.org/schema/context"
         xmlns:mvc="http://www.springframework.org/schema/mvc"
         xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+        xmlns:tx="http://www.springframework.org/schema/tx"
         xsi:schemaLocation="http://www.springframework.org/schema/beans
                 http://www.springframework.org/schema/beans/spring-beans.xsd
                 http://www.springframework.org/schema/context
@@ -11,7 +12,9 @@
                 http://www.springframework.org/schema/mvc
         		http://www.springframework.org/schema/mvc/spring-mvc.xsd
 				http://www.springframework.org/schema/data/jpa 
-				http://www.springframework.org/schema/data/jpa/spring-jpa.xsd"                
+				http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+				http://www.springframework.org/schema/tx 
+				http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"                
                 >   
 		<mvc:annotation-driven />                
                              
@@ -19,11 +22,49 @@
         <context:component-scan base-package="service"/>
         <context:component-scan base-package="web"/>
          
+         <!-- 
          <jpa:repositories base-package="domain" />
+         -->
          
-         <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-		  <property name="dataSource" ref="dataSource" />
-		  <property name="packagesToScan" value="domain" />
+		<jpa:repositories base-package="domain.repositories.read" entity-manager-factory-ref="entityManagerFactoryRead" transaction-manager-ref="transactionManagerRead"/>
+		<jpa:repositories base-package="domain.repositories.write" entity-manager-factory-ref="entityManagerFactoryWrite" transaction-manager-ref="transactionManagerWrite"/>         
+         
+         <bean id="entityManagerFactoryRead" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		  <property name="dataSource" ref="dataSourceRead" />
+		  <!-- 
+		  <property name="packagesToScan" value="domain.repositories.read" />
+		  -->
+	     <property name="packagesToScan">
+	         <array>
+	              <value>domain.repositories.read</value>
+	              <value>domain.entities</value>
+	         </array>
+	     </property> 		  
+			<property name="jpaProperties">
+			    <props>
+			        <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+			        <prop key="hibernate.show_sql">true</prop>
+			        <prop key="hibernate.hbm2ddl.auto">validate</prop>
+			    </props>
+			</property>		  
+		  <property name="jpaVendorAdapter">
+		   <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+		    <property name="generateDdl" value="false" />
+		   </bean>
+		  </property>
+         </bean>
+
+         <bean id="entityManagerFactoryWrite" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		  <property name="dataSource" ref="dataSourceWrite" />
+		  <!-- 
+		  <property name="packagesToScan" value="domain.repositories.write" />
+		  -->
+	     <property name="packagesToScan">
+	         <array>
+	              <value>domain.repositories.write</value>
+	              <value>domain.entities</value>
+	         </array>
+	     </property> 		  
 			<property name="jpaProperties">
 			    <props>
 			        <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
@@ -50,9 +91,19 @@
 			<property name="maxIdle" value="10" />		  
 		 </bean>
 		  -->
+		  
+		  <!-- 
+		<tx:annotation-driven transaction-manager="transactionManagerRead"/>
+		<tx:annotation-driven transaction-manager="transactionManagerWrite"/>
+		 -->		     
 		         
-		<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-		  <property name="entityManagerFactory" ref="entityManagerFactory" />
+		<bean id="transactionManagerRead" class="org.springframework.orm.jpa.JpaTransactionManager">
+		  <property name="entityManagerFactory" ref="entityManagerFactoryRead" />
+		 </bean>
+		 
+		<bean id="transactionManagerWrite" class="org.springframework.orm.jpa.JpaTransactionManager">
+		  <property name="entityManagerFactory" ref="entityManagerFactoryWrite" />
 		 </bean>		 
+		 		 
         
 </beans>

@@ -3,8 +3,9 @@ package service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import domain.User;
-import domain.UserRepository;
+import domain.entities.User;
+import domain.repositories.read.UserReadRepository;
+import domain.repositories.write.UserWriteRepository;
 import web.UserController;
 
 import java.util.List;
@@ -18,27 +19,31 @@ public class UserServiceImpl implements UserService {
 	private final static Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
 	@Autowired
-	private UserRepository userRepository;
+	private UserReadRepository userReadRepository;
+	
+	@Autowired
+	private UserWriteRepository userWriteRepository;
+	
 
 	@Override
 	public void test() {
-    	logger.info("[m:test]: userRepository: " + userRepository);
-    	logger.info("[m:test]: userRepository.getClass(): " + userRepository.getClass());
+//    	logger.info("[m:test]: userRepository: " + userRepository);
+//    	logger.info("[m:test]: userRepository.getClass(): " + userRepository.getClass());
 	}
 
 	@Override
 	public User save(User user) {
-		return this.userRepository.save(user);
+		return this.userWriteRepository.save(user);
 	}
 
 	@Override
 	public List<User> findAll() {
-		return this.userRepository.findAll();
+		return this.userReadRepository.findAll();
 	}
 
 	@Override
 	public void delete(Long id) {
-		this.userRepository.deleteById(id);
+		this.userWriteRepository.deleteById(id);
 		
 	}
 }

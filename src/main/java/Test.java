@@ -5,8 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-
-import domain.User;
+import domain.entities.User;
 import service.UserService;
 import web.UserController;
 

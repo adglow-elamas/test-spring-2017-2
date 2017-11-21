@@ -13,14 +13,23 @@
 				http://www.springframework.org/schema/data/jpa 
 				http://www.springframework.org/schema/data/jpa/spring-jpa.xsd"                
                 >   
-		 <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		 <bean id="dataSourceRead" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		  <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		  <property name="url" value="${BBDD_URL}" />
-		  <property name="username" value="${BBDD_USER}" />
-		  <property name="password" value="${BBDD_PASSWORD}" />
+		  <property name="url" value="${BBDD_URL_READ}" />
+		  <property name="username" value="${BBDD_USER_READ}" />
+		  <property name="password" value="${BBDD_PASSWORD_READ}" />
 			<property name="maxActive" value="1" />
 			<property name="maxIdle" value="1" />		  
 		 </bean>
 		 
+		 <bean id="dataSourceWrite" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		  <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		  <property name="url" value="${BBDD_URL_WRITE}" />
+		  <property name="username" value="${BBDD_USER_WRITE}" />
+		  <property name="password" value="${BBDD_PASSWORD_WRITE}" />
+			<property name="maxActive" value="1" />
+			<property name="maxIdle" value="1" />		  
+		 </bean>
+		 		 
 		 <import resource="classpath:beans.xml"/>
 </beans>
