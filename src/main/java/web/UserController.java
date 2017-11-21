@@ -3,6 +3,7 @@ package web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -58,12 +59,13 @@ public class UserController {
     	return userService.save(user);
     }
 
-    //test pagination
+    //test pagination and sorting
     @RequestMapping(value = "/backend/users/{page}", method = RequestMethod.GET)
     public Page<User> findAll(@PathVariable("page") int page) {
     	//Pageable pageable = new PageRequest(0,2);
-    	Pageable pageable = PageRequest.of(page, 2);
+    	//Pageable pageable = PageRequest.of(page, 2);//funciona
+    	Pageable pageable = PageRequest.of(page, 2, new Sort(Sort.Direction.DESC, "name"));
     	return userService.findAll(pageable);
     }	
-    
+
 }
