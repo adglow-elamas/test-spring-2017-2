@@ -57,8 +57,8 @@ public class Test {
 //			}
 			
 			
-//			List<User> users = userService.findAll();
-//			logger.info("[m:main]: users: " + userService);
+			List<User> users = userService.findAll();
+			logger.info("[m:main]: users.size(): " + users.size());
 			
 			/*
 			List<User> users = userService.findAll();
