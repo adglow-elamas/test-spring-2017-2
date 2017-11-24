@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import domain.User;
@@ -44,8 +45,28 @@ public class UserController {
     @RequestMapping(value = "/backend/users", method = RequestMethod.GET)
     public List<User> findAll() {
     	return userService.findAll();
-    }	
+    }
 
+    @RequestMapping(value = "/backend/users-paged", method = RequestMethod.GET)
+    public Page<User> findPage(
+    		@RequestParam(value="page", defaultValue="0") int page,
+    		@RequestParam(value="sort", defaultValue="name") String sort,
+    		@RequestParam(value="sort.dir", defaultValue="desc") String sortDir
+    		) {
+    	Pageable pageable = PageRequest.of(page, 2, new Sort(sortDir.equals("desc") ? Sort.Direction.DESC : Sort.Direction.ASC, sort));
+    	return userService.findAll(pageable);
+    }
+    
+    
+    /*
+    @RequestMapping(value = "/backend/users", method = RequestMethod.GET)
+    public Page<User> findAll(Pageable pageable) {
+    	logger.info("[m:save]: pageable: " + pageable);
+    	return null;
+    	//return userService.findAll();
+    }
+    */
+    
     @RequestMapping(value = "/backend/users/{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable("id") long id) {
     	userService.delete(id);
